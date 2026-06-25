@@ -1,0 +1,9 @@
+{
+    "component" : {
+        "ON1" : "Secteur1",
+        "ON2" : "Secteur2",
+        "ON3" : "Secteur3",
+        "ON4" : "Secteur4",
+        "ON5" : "SecteurN"
+    }
+}

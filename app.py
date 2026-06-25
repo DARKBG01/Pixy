@@ -1,42 +1,36 @@
-import sounddevice as sd
-from scipy.io.wavfile import write
-from faster_whisper import WhisperModel
+import os
+from flask import Flask,render_template,request
+from Pixy import Pixy
 
-# Enregistrement
-fs = 44100
-seconds = 5
+app = Flask(__name__)
+Pixy_instance = Pixy()
 
-print("Parlez...")
+@app.route("/",methods=["GET"])
+def home():
+    return render_template("index.html")
 
-audio = sd.rec(
-    int(seconds * fs),
-    samplerate=fs,
-    channels=1
-)
+@app.route("/upload",methods=["POST"])
+def upload():
+    path = "audio.webm"
+    request.files['audio'].save(path)
+    voice_decode = Pixy_instance.Voice_decode(path)
+    Commande = Pixy_instance.Thinks(voice_decode)
+    
+    Execuction = Pixy_instance.Execution(
+        "COM3",
+        Commande=Commande,
+        Simulation=True
+    )
+    
+    if Execuction:
+        print("Commande executée avec success")
+    return "ok"
 
-sd.wait()
 
-write("audio.wav", fs, audio)
+    
 
-print("ordre reçu".center(100,"="))
-
-print("Traitement....")
-
-# Whisper
-model = WhisperModel(
-    "small",
-    device="cpu",
-    compute_type="int8"
-)
-
-segments, info = model.transcribe(
-    "audio.wav",
-    language="fr"
-)
-
-texte = ""
-
-for segment in segments:
-    texte += segment.text
-
-print("Vous avez dit :", texte)
+if __name__ == '__main__':
+    if not (os.path.exists("database.db")):
+        Pixy_instance.Create_db()
+        Pixy_instance.Migrate()
+    app.run("0.0.0.0","8000",debug=True)
