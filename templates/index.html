@@ -11,6 +11,7 @@
   <label for=""> Entrez le nombre de seconde : </label>
   <input type="number" name="nbr_sec" id="nbr_sec">
   <button type="button" id="Launch">Lancer l'enregistrement</button>
+  <label for=""id="Verifier">Aucune commande</label>
 
 </body>
 
@@ -21,17 +22,25 @@ let recorder;
 let chunks = [];
 
 async function startRecording() {
-  const stream = await navigator.mediaDevices.getUserMedia({
-    audio: true
-  });
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true
+    });
 
-  recorder = new MediaRecorder(stream);
+    recorder = new MediaRecorder(stream);
 
-  recorder.ondataavailable = e => {
-    chunks.push(e.data);
-  };
+    recorder.ondataavailable = e => {
+      chunks.push(e.data);
+    };
 
-  recorder.start();
+    recorder.start();
+
+    console.log("Accès au microphone autorisé.");
+
+  } catch (err) {
+    alert("Impossible d'accéder au microphone : " + err.message);
+    console.error(err);
+  }
 }
 
 function stopRecording() {
@@ -54,6 +63,7 @@ function stopRecording() {
 
     chunks = [];
 
+    document.getElementById("Verifier").value = "Terminer";
     alert("opération terminée");
   };
 
@@ -73,6 +83,8 @@ document.getElementById("Launch").onclick = () => {
   let nbr = parseInt(document.getElementById("nbr_sec").value);
   Apply(nbr);
 };
+
+
 
 </script>
 

@@ -2,5 +2,5 @@ CREATE TABLE IF NOT EXISTS Components (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     Nom TEXT,
     Commande TEXT UNIQUE,
-    Etat_logique BOOLEAN DEFAULT 0
+    Etat_logique BOOLEAN DEFAULT 1
 );

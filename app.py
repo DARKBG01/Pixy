@@ -1,9 +1,11 @@
 import os
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,jsonify
 from Pixy import Pixy
 
 app = Flask(__name__)
 Pixy_instance = Pixy()
+port = "/dev/ttyUSB0"
+Pixy_instance.Execution(port)
 
 @app.route("/",methods=["GET"])
 def home():
@@ -17,16 +19,21 @@ def upload():
     Commande = Pixy_instance.Thinks(voice_decode)
     
     Execuction = Pixy_instance.Execution(
-        "COM3",
-        Commande=Commande,
-        Simulation=True
+        port,
+        Commande=Commande
     )
     
     if Execuction:
         print("Commande executée avec success")
     return "ok"
 
-
+@app.route("/stat",methods=["GET"])
+def stat():
+    c = Pixy_instance.Get_statut()
+    print(c)
+    
+    return jsonify(c)
+    
     
 
 if __name__ == '__main__':
