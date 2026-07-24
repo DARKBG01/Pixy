@@ -4,8 +4,9 @@ from Pixy import Pixy
 
 app = Flask(__name__)
 Pixy_instance = Pixy()
-port = "/dev/ttyUSB0"
-Pixy_instance.Execution(port)
+port_slb = "/dev/ttyUSB0"
+port_gsm = "/dev/ttyUSB1"
+Pixy_instance.Execution(port_slb, port_gsm)
 
 @app.route("/",methods=["GET"])
 def home():
@@ -19,7 +20,8 @@ def upload():
     Commande = Pixy_instance.Thinks(voice_decode)
     
     Execuction = Pixy_instance.Execution(
-        port,
+        port_slb,
+        port_gsm,
         Commande=Commande
     )
     

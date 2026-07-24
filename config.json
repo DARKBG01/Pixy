@@ -4,6 +4,6 @@
         "ON2" : "Secteur2",
         "ON3" : "Secteur3",
         "ON4" : "Secteur4",
-        "ON5" : "SecteurN"
+        "ON" : "SecteurN"
     }
 }

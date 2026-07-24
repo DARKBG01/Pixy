@@ -4,3 +4,10 @@ CREATE TABLE IF NOT EXISTS Components (
     Commande TEXT UNIQUE,
     Etat_logique BOOLEAN DEFAULT 1
 );
+
+CREATE TABLE IF NOT EXISTS Urgence (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT UNIQUE,
+    numero TEXT UNIQUE
+    
+);
